@@ -18,7 +18,6 @@ jobs:
 
       - name: Move files into correct structure
         run: |
-          mkdir -p .github/workflows
           mkdir -p app/src/main/java/com/emusoft/twinbt/bluetooth
           mkdir -p app/src/main/java/com/emusoft/twinbt/service
           mkdir -p app/src/main/java/com/emusoft/twinbt/ui
@@ -30,9 +29,6 @@ jobs:
           mkdir -p app/src/main/res/mipmap-xhdpi
           mkdir -p app/src/main/res/mipmap-xxhdpi
           mkdir -p app/src/main/res/mipmap-xxxhdpi
-
-          # Workflow
-          cp build.yml .github/workflows/build.yml
 
           # Gradle
           cp app_build.gradle app/build.gradle
