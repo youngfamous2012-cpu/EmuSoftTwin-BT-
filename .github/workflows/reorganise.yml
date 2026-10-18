@@ -1,0 +1,71 @@
+name: Reorganise Files
+
+on:
+  workflow_dispatch:
+
+jobs:
+  reorganise:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Move files into correct structure
+        run: |
+          mkdir -p .github/workflows
+          mkdir -p app/src/main/java/com/emusoft/twinbt/bluetooth
+          mkdir -p app/src/main/java/com/emusoft/twinbt/service
+          mkdir -p app/src/main/java/com/emusoft/twinbt/ui
+          mkdir -p app/src/main/res/drawable
+          mkdir -p app/src/main/res/layout
+          mkdir -p app/src/main/res/values
+          mkdir -p app/src/main/res/mipmap-mdpi
+          mkdir -p app/src/main/res/mipmap-hdpi
+          mkdir -p app/src/main/res/mipmap-xhdpi
+          mkdir -p app/src/main/res/mipmap-xxhdpi
+          mkdir -p app/src/main/res/mipmap-xxxhdpi
+
+          # Workflow
+          cp build.yml .github/workflows/build.yml
+
+          # Gradle
+          cp app_build.gradle app/build.gradle
+
+          # Manifest
+          cp AndroidManifest.xml app/src/main/AndroidManifest.xml
+
+          # Kotlin source files
+          cp BluetoothDeviceManager.kt app/src/main/java/com/emusoft/twinbt/bluetooth/BluetoothDeviceManager.kt
+          cp AudioMirrorEngine.kt app/src/main/java/com/emusoft/twinbt/service/AudioMirrorEngine.kt
+          cp TwinBTService.kt app/src/main/java/com/emusoft/twinbt/service/TwinBTService.kt
+          cp MainActivity.kt app/src/main/java/com/emusoft/twinbt/ui/MainActivity.kt
+
+          # Resources
+          cp ic_bt_notify.xml app/src/main/res/drawable/ic_bt_notify.xml
+          cp activity_main.xml app/src/main/res/layout/activity_main.xml
+          cp colors.xml app/src/main/res/values/colors.xml
+          cp strings.xml app/src/main/res/values/strings.xml
+          cp themes.xml app/src/main/res/values/themes.xml
+
+          # Icons
+          cp mdpi_ic_launcher.png app/src/main/res/mipmap-mdpi/ic_launcher.png
+          cp mdpi_ic_launcher_round.png app/src/main/res/mipmap-mdpi/ic_launcher_round.png
+          cp hdpi_ic_launcher.png app/src/main/res/mipmap-hdpi/ic_launcher.png
+          cp hdpi_ic_launcher_round.png app/src/main/res/mipmap-hdpi/ic_launcher_round.png
+          cp xhdpi_ic_launcher.png app/src/main/res/mipmap-xhdpi/ic_launcher.png
+          cp xhdpi_ic_launcher_round.png app/src/main/res/mipmap-xhdpi/ic_launcher_round.png
+          cp xxhdpi_ic_launcher.png app/src/main/res/mipmap-xxhdpi/ic_launcher.png
+          cp xxhdpi_ic_launcher_round.png app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png
+          cp xxxhdpi_ic_launcher.png app/src/main/res/mipmap-xxxhdpi/ic_launcher.png
+          cp xxxhdpi_ic_launcher_round.png app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png
+
+      - name: Commit reorganised structure
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "Reorganise files into correct Android project structure"
+          git push
