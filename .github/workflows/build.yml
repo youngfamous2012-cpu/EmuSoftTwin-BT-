@@ -1,14 +1,36 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <color name="bg_dark">#0F1117</color>
-    <color name="card_bg">#1C1F2E</color>
-    <color name="accent_blue">#3D7EFF</color>
-    <color name="accent_green">#2ECC71</color>
-    <color name="green_active">#2ECC71</color>
-    <color name="text_primary">#F0F0F5</color>
-    <color name="text_secondary">#8B8FA8</color>
-    <color name="text_hint">#555870</color>
-    <color name="slider_track">#2C3050</color>
-    <color name="stop_red">#C0392B</color>
-    <color name="white">#FFFFFF</color>
-</resources>
+name: Build EmuSoft Twin BT APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Grant Gradle execute permission
+        run: chmod +x gradlew
+
+      - name: Build Debug APK
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: EmuSoft-TwinBT-debug
+          path: app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
